@@ -10,53 +10,48 @@ import org.springframework.stereotype.Service;
 import com.cms.entity.Paper;
 import com.cms.entity.Role;
 import com.cms.entity.User;
-import com.cms.repository.PaperRepository;
 import com.cms.repository.RoleRepository;
 import com.cms.repository.UserRepository;
 
 @Service
-@ComponentScan(basePackages = {"com.wizzard.uploadpapers.repository", 
-								"com.wizzard.uploadpapers.configuration"})
+@ComponentScan(basePackages = { "com.cms.repository" })
 public class UserServiceImpl implements UserService {
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private RoleRepository roleRepository;
-	
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
 
-	@Override
-	public void saveUser(User user, String role) {
-		user.setPassword(bCryptPasswordEncoder.
-				encode(user.getPassword()));
-		Role userRole = roleRepository.findByRole(role);
-		user.setRole(userRole);
-		userRepository.save(user);
-		
-	}
-	
-	@Override
-	public void saveUser(User user) {
-		userRepository.save(user);
-	}
-	
+    @Autowired
+    private UserRepository userRepository;
 
-	@Override
-	public User findUserByEmail(String email) {
-		return userRepository.findByEmail(email);
-	}
-	
-	@Override
-	public void AddPaper(User user, Paper paper) {
-		List<Paper> listOfPapers = user.getPapers();	
-		listOfPapers.add(paper);
-		user.setPapers(listOfPapers);
-		userRepository.save(user);
-	}
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Override
+    public void saveUser(User user, String role) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        Role userRole = roleRepository.findByRole(role);
+        user.setRole(userRole);
+        userRepository.save(user);
+
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void AddPaper(User user, Paper paper) {
+        List<Paper> listOfPapers = user.getPapers();
+        listOfPapers.add(paper);
+        user.setPapers(listOfPapers);
+        userRepository.save(user);
+    }
 
     @Override
     public List<User> findAllByRole(String role) {

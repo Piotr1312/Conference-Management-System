@@ -12,25 +12,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="feedback")
+@Table(name = "feedback")
 public class Feedback {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id")
     private Integer id;
-    
+
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="paper_id", nullable=false)
+    @JoinColumn(name = "paper_id", nullable = false)
     private Paper paper;
-    
+
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    
+
     @Column(name = "score")
     private Integer score;
-    
+
     @Column(name = "feedback_file")
     @Lob
     private byte[] feedbackFile;
@@ -74,6 +74,5 @@ public class Feedback {
     public void setFeedbackFile(byte[] feedbackFile) {
         this.feedbackFile = feedbackFile;
     }
-    
-    
+
 }

@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 import com.cms.entity.Paper;
 
 @Repository
-public interface PaperRepository extends JpaRepository<Paper, Long>{
-	Paper findById(int id);
-	Paper findByTitle(String title);
-	List<Paper> findAllByOrderByTitleAsc();
+public interface PaperRepository extends JpaRepository<Paper, Long> {
+    Paper findById(int id);
+
+    Paper findByTitle(String title);
+
+    List<Paper> findAllByOrderByTitleAsc();
 
 }

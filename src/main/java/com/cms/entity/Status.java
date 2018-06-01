@@ -8,33 +8,31 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="status")
+@Table(name = "status")
 public class Status {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="status_id")
-	private int id;
-	
-	@Column(name="status")
-	private String status;
 
-	public int getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "status_id")
+    private int id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "status")
+    private String status;
 
-	public String getStatus() {
-		return status;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
-	
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 }

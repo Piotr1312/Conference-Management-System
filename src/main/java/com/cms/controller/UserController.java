@@ -26,14 +26,13 @@ import com.cms.entity.Paper;
 import com.cms.entity.User;
 import com.cms.model.FileUploadModel;
 import com.cms.model.ReviewerDetails;
-import com.cms.repository.FeedbackRepository;
 import com.cms.service.FeedbackService;
 import com.cms.service.PaperService;
 import com.cms.service.UserService;
 import com.cms.valid.FileValidator;;
 
 @Controller
-@ComponentScan(basePackages = { "com.wizzard.uploadpapers.service", "com.wizzard.uploadpapers.storage" })
+@ComponentScan(basePackages = { "com.cms.service", "com.cms.valid" })
 @RequestMapping(value = "/user")
 public class UserController {
 
@@ -42,7 +41,7 @@ public class UserController {
 
     @Autowired
     private PaperService paperService;
-    
+
     @Autowired
     private FeedbackService feedbackService;
 
@@ -103,7 +102,7 @@ public class UserController {
         Integer reviewersNumber = paperService.getNumberOfReviewers(paper);
         List<Feedback> feedbacks = paper.getFeedbacks();
         List<ReviewerDetails> reviewers = new ArrayList<>();
-        
+
         for (Feedback feedback : feedbacks) {
             ReviewerDetails details = new ReviewerDetails();
             User reviewer = feedback.getUser();

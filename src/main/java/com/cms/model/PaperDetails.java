@@ -5,7 +5,7 @@ public class PaperDetails {
     private Integer score;
     private Integer reviewersNumber;
     private String status;
-    
+
     public String getPaperTitle() {
         return paperTitle;
     }
@@ -17,15 +17,15 @@ public class PaperDetails {
     public Integer getScore() {
         return score;
     }
-    
+
     public void setScore(Integer score) {
         this.score = score;
     }
-    
+
     public Integer getReviewersNumber() {
         return reviewersNumber;
     }
-    
+
     public void setReviewersNumber(Integer reviewersNumber) {
         this.reviewersNumber = reviewersNumber;
     }
@@ -37,5 +37,5 @@ public class PaperDetails {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
 }

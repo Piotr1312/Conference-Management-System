@@ -5,10 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,22 +20,22 @@ import com.cms.service.UserService;
 import com.cms.valid.ReviewerAssignmentValid;
 
 @Controller
-@ComponentScan(basePackages = {"com.wizzard.uploadpapers.service"})
-@RequestMapping(value="/assign")
+@ComponentScan(basePackages = { "com.cms.service" })
+@RequestMapping(value = "/assign")
 public class AssignController {
-    
+
     @Autowired
     private PaperService paperService;
-    
+
     @Autowired
     private UserService userService;
-    
+
     @RequestMapping(value = "/files", method = RequestMethod.GET)
-    public ModelAndView listFiles(){
+    public ModelAndView listFiles() {
         List<PaperDetails> paperDetails = new ArrayList<>();
         List<Paper> papers = paperService.findAllByOrderByTitleAsc();
-        
-        for(Paper paper: papers) {
+
+        for (Paper paper : papers) {
             PaperDetails details = new PaperDetails();
             details.setPaperTitle(paper.getTitle());
             details.setScore(paper.getScore());
@@ -46,25 +43,25 @@ public class AssignController {
             details.setStatus(paper.getStatus().getStatus());
             paperDetails.add(details);
         }
-        
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("files", paperDetails);
         modelAndView.setViewName("/assign/papers");
         return modelAndView;
     }
-    
-    @RequestMapping(value="/files/{filename}", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/files/{filename}", method = RequestMethod.GET)
     public ModelAndView serveReviewerAssignmentView(@PathVariable String filename) {
         ModelAndView modelAndView = new ModelAndView();
         Paper paper = paperService.findPaperByTitle(filename);
         Integer reviewersNumber = paperService.getNumberOfReviewers(paper);
         String title = paper.getTitle();
         modelAndView.addObject("title", title);
-        
+
         List<ReviewerDetails> reviewerDetails = new ArrayList<>();
         List<User> reviewers = userService.findAllByRole("REVIEWER");
-        
-        for(User reviewer: reviewers) {
+
+        for (User reviewer : reviewers) {
             ReviewerDetails details = new ReviewerDetails();
             details.setFirstName(reviewer.getName());
             details.setLastName(reviewer.getLastName());
@@ -73,24 +70,24 @@ public class AssignController {
             details.setConflictFactor(0);
             reviewerDetails.add(details);
         }
-           
-        modelAndView.addObject("reviewers", reviewerDetails);         
+
+        modelAndView.addObject("reviewers", reviewerDetails);
         modelAndView.addObject("reviewersNumber", reviewersNumber);
         modelAndView.addObject("title", title);
         modelAndView.setViewName("/assign/paper-reviewer");
-        return modelAndView;        
+        return modelAndView;
     }
-    
+
     @RequestMapping(value = "/assign-reviewer/{title}/{email}", method = RequestMethod.GET)
     public ModelAndView confirmAssignment(@PathVariable String title, @PathVariable String email) {
         Paper paper = paperService.findPaperByTitle(title);
         User reviewer = userService.findUserByEmail(email);
-        ReviewerAssignmentValid valid = new ReviewerAssignmentValid();   
-       
-        if(valid.isAssignedOk(paper, reviewer)) {
+        ReviewerAssignmentValid valid = new ReviewerAssignmentValid();
+
+        if (valid.isAssignedOk(paper, reviewer)) {
             paperService.addUser(paper, reviewer);
         }
-        
+
         String communicate = valid.getCommunicate();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("communicate", communicate);
